@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth')
 
 const Animal = require('../models/animals');
 
@@ -20,7 +21,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   const animal = new Animal({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name
@@ -58,7 +59,7 @@ router.get('/:animalId', (req, res, next) => {
   });
 });
 
-router.patch('/:animalId', (req, res, next) => {
+router.patch('/:animalId', checkAuth, (req, res, next) => {
   const id = req.params.animalId;
   const updateOps = {};
   for(const ops of req.body){
@@ -78,7 +79,7 @@ router.patch('/:animalId', (req, res, next) => {
     })
 });
 
-router.delete('/:animalId', (req, res, next) => {
+router.delete('/:animalId', checkAuth, (req, res, next) => {
   const id = req.params.animalId;
   Animal.remove({_id: id})
     .exec()

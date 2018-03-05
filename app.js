@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const locationsRoute = require('./api/routes/locations');
 const animalsRoute = require('./api/routes/animals');
+const userRoute = require('./api/routes/user');
 
 
 mongoose.connect('mongodb://admin:' + process.env.MONGO_ATLAS_PW + '@rogue-agent-db-shard-00-00-l2g4n.mongodb.net:27017,rogue-agent-db-shard-00-01-l2g4n.mongodb.net:27017,rogue-agent-db-shard-00-02-l2g4n.mongodb.net:27017/test?ssl=true&replicaSet=rogue-agent-db-shard-0&authSource=admin')
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 
 app.use('/api/locations', locationsRoute);
 app.use('/api/animals', animalsRoute);
+app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {
   const error = new Error('Not Found');

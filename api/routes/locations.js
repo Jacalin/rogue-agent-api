@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth')
 
 const Location = require('../models/locations');
 
@@ -20,7 +21,7 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   const location = new Location({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name
@@ -58,7 +59,7 @@ router.get('/:locationId', (req, res, next) => {
   });
 });
 
-router.patch('/:locationId', (req, res, next) => {
+router.patch('/:locationId', checkAuth, (req, res, next) => {
   const id = req.params.locationId;
   const updateOps = {};
   for(const ops of req.body){
@@ -78,7 +79,7 @@ router.patch('/:locationId', (req, res, next) => {
     })
 });
 
-router.delete('/:locationId', (req, res, next) => {
+router.delete('/:locationId', checkAuth, (req, res, next) => {
   const id = req.params.locationId;
   Location.remove({_id: id})
     .exec()
